@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php $PASTE_FOUND = false;
+<?php
+
+$PASTE_FOUND = false;
 require_once("./database.php");
+
 if (isset($_GET["id"])) {
     $ID = htmlentities($_GET["id"]);
     $get_paste_query_count = $SQL->query("SELECT COUNT(*) AS 'COUNT' FROM pastes WHERE id = '$ID'");
@@ -39,6 +42,7 @@ if ($PASTE_FOUND == false) {
 </head>
 
 <body class="bg-dark bg-dark-500" style="background-color: #171a1f;">
+    <div><h1 class="w-full md:w-auto text-gray-200 text-xl text-opacity-80" style="color: #e5e7eb"><?php echo $NAME ?></h1></div>
     <pre class="focus:outline-none line-numbers linkable-line-numbers format" data-line="" data-src="plugins/line-highlight/prism-line-highlight.js" data-src-status="loaded" data-start="1" id="Line" style="counter-reset:linenumber 19" tabindex="0"><code class="focus:outline-none format language-<?php if ($PASTE_FOUND) {
                                                                                                                                                                                                                                                                                                             echo $MARK;
                                                                                                                                                                                                                                                                                                         } ?>"><?php if (isset($CONTENT)) {

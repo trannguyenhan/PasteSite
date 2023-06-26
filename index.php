@@ -33,7 +33,7 @@ if (isset($_POST["name"])) {
                     "Success" => true,
                     "Message" => "Successfuly created paste"
                 ]);
-                header("Location: ./paste.php?id=$ID");
+                header("Location: ./edit.php?id=$ID");
             } else {
             }
         }

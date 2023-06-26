@@ -19,6 +19,30 @@
 $PASTE_FOUND = false;
 require_once("./database.php");
 
+if (isset($_POST["name"])) {
+    if (isset($_POST["mark"])) {
+        if (isset($_POST["content"])) {
+            $ID = toID(6);
+            $CREATED = time();
+            $MARK = strval(htmlentities($_POST["mark"]));
+            $CONTENT = $SQL->real_escape_string($_POST["content"]);
+            $NAME = $SQL->real_escape_string(strval(htmlentities($_POST["name"])));
+            if (!isset($NAME)) {
+                $NAME = "Unnamed Paste";
+            }
+            $QUERY = $SQL->query("INSERT INTO pastes(created, id, mark, name, content) VALUES('$CREATED', '$ID', '$MARK', '$NAME', '$CONTENT')");
+            if ($QUERY == true) {
+                echo json_encode([
+                    "Success" => true,
+                    "Message" => "Successfuly created paste"
+                ]);
+                header("Location: ./edit.php?id=$ID");
+            } else {
+            }
+        }
+    }
+}
+
 if (isset($_GET["id"])) {
     $ID = htmlentities($_GET["id"]);
     $get_paste_query_count = $SQL->query("SELECT COUNT(*) AS 'COUNT' FROM pastes WHERE id = '$ID'");
@@ -59,52 +83,52 @@ if ($PASTE_FOUND == false) {
                     <div class="space-x-3">
                         <!-- Highlighting Languages Add More If Needed https://prismjs.com/download.html -->
                         <select required name="mark" class="ml-3 w-full md:w-auto mt-5 float-right md:mt-0 px-8 text-gray-200 py-3 border-r-4 border-dark-400 focus:outline-none rounded-md bg-dark-400">
-                            <option value="none">None</option>
-                            <option value="c">C</option>
-                            <option value="go">Go</option>
-                            <option value="csharp">C#</option>
-                            <option value="cpp">C++</option>
-                            <option value="css">CSS</option>
-                            <option value="ejs">Ejs</option>
-                            <option value="sql">SQL</option>
-                            <option value="xml">XML</option>
-                            <option value="lua">Lua</option>
-                            <option value="txt">Txt</option>
-                            <option value="git">Git</option>
-                            <option value="php">Php</option>
-                            <option value="pug">Pug</option>
-                            <option value="dot">Dot</option>
-                            <option value="sass">Sass</option>
-                            <option value="html">HTML</option>
-                            <option value="dart">Dart</option>
-                            <option value="twig">Twig</option>
-                            <option value="nginx">Nginx</option>
-                            <option value="perl">Perl</option>
-                            <option value="ruby">Ruby</option>
-                            <option value="toml">Toml</option>
-                            <option value="rust">Rust</option>
-                            <option value="yaml">Yaml</option>
-                            <option value="java">Java</option>
-                            <option value="haxe">Haxe</option>
-                            <option value="batch">Batch</option>
-                            <option value="python">Python</option>
-                            <option value="kotlin">Kotlin</option>
-                            <option value="matlab">Matlab</option>
-                            <option value="docket">Docker</option>
-                            <option value="prolog">Prolog</option>
-                            <option value="fortran">Fortran</option>
-                            <option value="groovy">Groovy</option>
-                            <option value="haskell">Haskell</option>
-                            <option value="lua">URI + URL</option>
-                            <option value="clojure">Clojure</option>
-                            <option value="markdown">Markdown</option>
-                            <option value="typescript">Typecript</option>
-                            <option value="chaiscript">ChaiScript</option>
-                            <option value="js">Javascript</option>
-                            <option value="objectivec">Objective-C</option>
-                            <option value="as">Actionscript</option>
-                            <option value="vb">Visual Basics</option>
-                            <option value="dns-zone-file">DNS Zone File</option>
+                            <option value="none" <?php if($MARK == 'none') echo 'selected'; ?>>None</option>
+                            <option value="c" <?php if($MARK == 'c') echo 'selected'; ?>>C</option>
+                            <option value="go" <?php if($MARK == 'go') echo 'selected'; ?>>Go</option>
+                            <option value="csharp" <?php if($MARK == 'csharp') echo 'selected'; ?>>C#</option>
+                            <option value="cpp" <?php if($MARK == 'cpp') echo 'selected'; ?>>C++</option>
+                            <option value="css" <?php if($MARK == 'css') echo 'selected'; ?>>CSS</option>
+                            <option value="ejs" <?php if($MARK == 'ejs') echo 'selected'; ?>>Ejs</option>
+                            <option value="sql" <?php if($MARK == 'sql') echo 'selected'; ?>>SQL</option>
+                            <option value="xml" <?php if($MARK == 'xml') echo 'selected'; ?>>XML</option>
+                            <option value="lua" <?php if($MARK == 'lua') echo 'selected'; ?>>Lua</option>
+                            <option value="txt" <?php if($MARK == 'txt') echo 'selected'; ?>>Txt</option>
+                            <option value="git" <?php if($MARK == 'git') echo 'selected'; ?>>Git</option>
+                            <option value="php" <?php if($MARK == 'php') echo 'selected'; ?>>Php</option>
+                            <option value="pug" <?php if($MARK == 'pug') echo 'selected'; ?>>Pug</option>
+                            <option value="dot" <?php if($MARK == 'dot') echo 'selected'; ?>>Dot</option>
+                            <option value="sass" <?php if($MARK == 'sass') echo 'selected'; ?>>Sass</option>
+                            <option value="html" <?php if($MARK == 'html') echo 'selected'; ?>>HTML</option>
+                            <option value="dart" <?php if($MARK == 'dart') echo 'selected'; ?>>Dart</option>
+                            <option value="twig" <?php if($MARK == 'twig') echo 'selected'; ?>>Twig</option>
+                            <option value="nginx" <?php if($MARK == 'nginx') echo 'selected'; ?>>Nginx</option>
+                            <option value="perl" <?php if($MARK == 'perl') echo 'selected'; ?>>Perl</option>
+                            <option value="ruby" <?php if($MARK == 'ruby') echo 'selected'; ?>>Ruby</option>
+                            <option value="toml" <?php if($MARK == 'toml') echo 'selected'; ?>>Toml</option>
+                            <option value="rust" <?php if($MARK == 'rust') echo 'selected'; ?>>Rust</option>
+                            <option value="yaml" <?php if($MARK == 'yaml') echo 'selected'; ?>>Yaml</option>
+                            <option value="java" <?php if($MARK == 'java') echo 'selected'; ?>>Java</option>
+                            <option value="haxe" <?php if($MARK == 'haxe') echo 'selected'; ?>>Haxe</option>
+                            <option value="batch" <?php if($MARK == 'batch') echo 'selected'; ?>>Batch</option>
+                            <option value="python" <?php if($MARK == 'python') echo 'selected'; ?>>Python</option>
+                            <option value="kotlin" <?php if($MARK == 'kotlin') echo 'selected'; ?>>Kotlin</option>
+                            <option value="matlab" <?php if($MARK == 'matlab') echo 'selected'; ?>>Matlab</option>
+                            <option value="docket" <?php if($MARK == 'docket') echo 'selected'; ?>>Docker</option>
+                            <option value="prolog" <?php if($MARK == 'prolog') echo 'selected'; ?>>Prolog</option>
+                            <option value="fortran" <?php if($MARK == 'fortran') echo 'selected'; ?>>Fortran</option>
+                            <option value="groovy" <?php if($MARK == 'groovy') echo 'selected'; ?>>Groovy</option>
+                            <option value="haskell" <?php if($MARK == 'haskell') echo 'selected'; ?>>Haskell</option>
+                            <option value="lua" <?php if($MARK == 'lua') echo 'selected'; ?>>URI + URL</option>
+                            <option value="clojure" <?php if($MARK == 'clojure') echo 'selected'; ?>>Clojure</option>
+                            <option value="markdown" <?php if($MARK == 'markdown') echo 'selected'; ?>>Markdown</option>
+                            <option value="typescript" <?php if($MARK == 'typescript') echo 'selected'; ?>>Typecript</option>
+                            <option value="chaiscript" <?php if($MARK == 'chaiscript') echo 'selected'; ?>>ChaiScript</option>
+                            <option value="js" <?php if($MARK == 'js') echo 'selected'; ?>>Javascript</option>
+                            <option value="objectivec" <?php if($MARK == 'objectivec') echo 'selected'; ?>>Objective-C</option>
+                            <option value="as" <?php if($MARK == 'as') echo 'selected'; ?>>Actionscript</option>
+                            <option value="vb" <?php if($MARK == 'vb') echo 'selected'; ?>>Visual Basics</option>
+                            <option value="dns-zone-file" <?php if($MARK == 'dns-zone-file') echo 'selected'; ?>>DNS Zone File</option>
                         </select>
                         <button name="submit" type="submit" formmethod="POST" class="float-right w-full md:w-auto mt-5 md:mt-0 border-2 bg-violet hover:bg-dark-400 duration-500 transition border-violet px-8  text-gray-200 py-2  rounded-md">SAVE</button>
                         <a href="<?php echo "paste.php?id=$ID" ?>"><button name="view" type="button" class="float-right w-full md:w-auto mt-5 md:mt-0 border-2 bg-violet hover:bg-dark-400 duration-500 transition border-violet px-8  text-gray-200 py-2  rounded-md">VIEW</button></a>
